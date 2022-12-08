@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OTHELLO</title>
+    <style>
+   html,body{
+     overflow:hidden;
+   }
+    .green{
+        background-color:green;
+        border:2px solid;
+        width:55px;
+        height:50px;
+        display: inline-block;
+        line-height:0px;
+    }
+    .greenwhite{
+      background-color:greenyellow;
+        border:2px solid;
+        width:55px;
+        height:50px;
+        display: inline-block;
+        line-height:0px;
+    }
+    .banwhite{
+        background-image:url("whiteee.png");
+        border:2px solid;
+        width:55px;
+        height:50px;
+        display: inline-block;
+        line-height:0px;
+    }
+    .banblack{
+        background-image:url("blackkkk.png");
+        border:2px solid;
+        width:55px;
+        height:50px;
+        display: inline-block;
+        line-height:0px;
+    }
+
+    body>div{
+        padding:0px;
+        line-height:0px;
+
+
+    }
+
+        #score{
+            text-align:center;
+            font-size: 18px;
+        margin:20px;
+        }
+    #bann{
+
+        text-align:center;
+
+    }
+
+    #status{
+
+        text-align:center;
+        font-size: 18px;
+        margin:20px;
+    }
+
+        #score2{
+            text-align:center;
+        font-size: 18px;
+        margin:20px;
+        }
+
+    </style>
+
+
+
+
+</head>
+<body>
+<div id="status">
+White turn
+</div>
+
+<div id="bann"> </div>
+
+
+
+
+    <div id="score">
+    <label id="blackk" ></label>
+    <label id="white"></label>
+    </div>
+
+    <div id ="score2">
+
+    <label id="winner" for="winner"></label>
+    </div>
+
+<script >
+  function hikiwake(){
+      if(document.querySelector(".greenwhite")==null)
+               winner(whitecount,blackcount);
+  }
+        function win(ban){
+            var blackcount=0;
+            var whitecount=0;
+            for(var i=0;i<8;i++){
+                for(var t=0;t<8;t++){
+                    if(ban[i][t]==1)
+                        whitecount+=1;
+                    if(ban[i][t]==2)
+                       blackcount+=1;
+                }
+            }
+            var blackk=document.getElementById("blackk");
+            var whitee=document.getElementById("white");
+            blackk.innerHTML="黒 :"+blackcount;
+            whitee.innerHTML="白 :"+whitecount ;
+       //if(document.querySelector(".greenwhite")==null)
+        //     {
+          //   if(player==1)
+            //  player=2;
+            //else if(player==2)
+            //   player=1;
+            //find();
+
+              //}
+        //   else
+                if(whitecount+blackcount==64 && document.querySelector(".greenwhite")==null )
+                winner(whitecount,blackcount);
+            //else if(document.querySelector(".greenwhite")==null)
+              //  winner(whitecount,blackcount);
+
+        }
+
+    function winner(whitecount,blackcount){
+
+            var y=document.getElementById("winner");
+            if(blackcount>whitecount)
+                y.innerHTML="黒が勝、おめでとう";
+            else if(whitecount<blackcount)
+                y.innerHTML="城が勝、おめでとう"
+            else
+                    y.innerHTML="引き分けです"
+
+
+
+    }
+
+        ban=[[0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0],
+             [0,0,0,2,1,0,0,0],
+             [0,0,0,1,2,0,0,0],
+             [0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0]];
+
+
+            var i;
+            var j;
+
+        function a(){
+           document.getElementById("bann").innerHTML="";
+
+            for(i=0;i<ban.length;i++){
+                for( j=0;j<ban[i].length;j++){
+
+                    if(ban[i][j]===0)
+                    document.getElementById("bann").innerHTML+="<div class='green "+i+j+"' onclick=' clickfunc("+i+","+j+");'></div>";
+
+                    else if(ban[i][j]===1)
+                    document.getElementById("bann").innerHTML+="<div class='banwhite "+i+j+"' onclick=' clickfunc("+i+","+j+");'></div>";
+                    else if(ban[i][j]===2)
+                    document.getElementById("bann").innerHTML+="<div class='banblack "+i+j+"' onclick=' clickfunc("+i+","+j+");'></div>";
+                }
+
+                    document.getElementById("bann").innerHTML+="<br>";
+            }
+
+            find();
+           hikiwake();
+
+
+        }
+
+        window.onload=a;
+
+
+        var player=1;
+
+        function recursivewhite(i,j,k,z){
+
+        if(i>7||j>7||i<0||j<0){
+            return 2;//karena sebelahnya berlawanan
+        }
+
+        if(ban[i][j]==1)
+        {   return 1;
+        }
+        if(ban[i][j]==0)
+        return 2; //karena return si item lagi ketika ijo
+
+        //if(ban[i+k][j+z]==2&&k>=0)
+        ban[i][j]=recursivewhite(i+k,j+z,k,z);
+        return ban[i][j];
+       }
+
+
+function recursiveblack(i,j,k,z){
+
+if(i>7||j>7||i<0||j<0){
+    return 1;
+}
+
+if(ban[i][j]==2)
+{   return 2;
+}
+
+if(ban[i][j]==0)
+return 1; //karena return si item lagi ketika ijo
+
+//if(ban[i+k][j+z]==2&&k>=0)
+ban[i][j]=recursiveblack(i+k,j+z,k,z);
+return ban[i][j];
+}
+
+
+
+function checkk(i,j){
+    var y=0;
+for(var t=0;t<8;t++)
+    {
+        if(checkposit(i+id[t][y],j+id[t][y+1],1)<=0 ){
+if(ban[i+id[t][y]][j+id[t][y+1]]===2 && ban[i][j]==1 )
+recursivewhite(i+id[t][y],j+id[t][y+1],id[t][y],id[t][y+1]);
+else if( ban[i+id[t][y]][j+id[t][y+1]]===1 && ban[i][j]==2  )
+recursiveblack(i+id[t][y],j+id[t][y+1],id[t][y],id[t][y+1]);
+
+}
+}
+}
+
+
+var id=[[1,-1],[-1,1],[1,1],[-1,-1],[0,1],[1,0],[-1,0],[0,-1]]
+
+
+
+
+
+       function clickfunc(i,j){
+        console.log(i,j);
+
+        if(document.querySelector("[class='"+i+j+" greenwhite']")){
+        if(ban[i][j]===0 && player===1 && checkblack(i,j,1,1)>=1 ){
+            console.log(checkblack(i,j,2));
+            document.getElementById("status").innerHTML="黒の手番";
+            ban[i][j]=1;
+            player=2;
+           checkk(i,j);
+
+
+
+            a();
+        } else if(ban[i][j]===0 && player===2 && checkwhite(i,j,2,1)>=1){
+            console.log(checkblack(i,j,2));
+            document.getElementById("status").innerHTML="白の手番";
+            ban[i][j]=2;
+            player=1;
+
+            checkk(i,j);
+
+
+            a();
+        }
+        }
+       }
+       function checkposit(i,j,k){
+           var count=0;
+           if(i<0 || j<0 ||j>7 ||i>7)
+           count++;
+          return count;
+       }
+
+       function checkwhite(i,j,k,l){
+           count=0;
+           const el=document.querySelector(".green");
+
+            if(l<=-1)
+            return 0;
+
+        if(i>7||j>7||i<0||j<0){
+            return 0;
+        }
+
+          //if(el.contains(".greenwhite"))
+         //  return 1;
+
+
+
+       if(ban[i][j]==1)
+       return 1;
+
+       if(ban[i][j]==0 && l!=1)
+       return 0;
+
+        return count + checkwhite(i+1,j+1,k,l-1)+checkwhite(i,j+1,k,l-1)+checkwhite(i,j-1,k,l-1)+checkwhite(i-1,j,k,l-1)+checkwhite(i+1,j,k,l-1)+checkwhite(i-1,j-1,k,l-1)+checkwhite(i+1,j-1,k,l-1)+checkwhite(i-1,j+1,k,l-1);
+
+       }
+
+       function checkblack(i,j,k,l){
+        const el=document.querySelector(".green");
+           count=0;
+           if(l<=-1)
+            return 0;
+           if(i>7||j>7||i<0||j<0){
+            return 0;
+        }
+           if(ban[i][j]==2)
+           return 1;
+
+          //if(el.contains(".greenwhite"))
+           //return 1;
+
+         if(ban[i][j]==0 && l!=1)
+       return 0;
+        return count+checkblack(i,j+1,k,l-1)+checkblack(i,j-1,k,l-1)+checkblack(i-1,j,k,l-1)+checkblack(i+1,j,k,l-1)+checkblack(i+1,j+1,k,l-1)+checkblack(i-1,j-1,k,l-1)+checkblack(i+1,j-1,k,l-1)+checkblack(i-1,j+1,k,l-1);
+
+}
+
+var t=0;
+var timer;
+function ifgreen(i,j){
+    var butu="green "+i+j;
+    var y=document.getElementsByClassName(butu);
+    y[0].classList.toggle("greenwhite");
+    y[0].classList.toggle("green");
+
+}
+
+function interval(){
+    if(t<3){
+            var y=document.getElementsByClassName('green 54');
+             y[0].classList.toggle("greenwhite");
+             y[0].classList.toggle("green");
+    t++;
+        }
+        else{
+            clearInterval(timer);
+        }
+}
+
+function find(){
+    for(var i=0;i<8;i++)
+            {for(var j=0;j<8;j++)
+              {
+                  if(ban[i][j]==player){
+                    hint(i,j);
+                  }
+              }
+            }
+}
+
+      function hint(i,j){
+          var y=0;
+          var k=0;
+          var z=0;
+
+                    for(var t=0;t<8;t++)
+                        {
+                            if(player==1){
+                        if(checkposit(i+id[t][y],j+id[t][y+1],1)<=0 ){
+                        if(ban[i+id[t][y]][j+id[t][y+1]]===2 && ban[i][j]==1 )
+                        {    k=i+id[t][y];
+                             z=j+id[t][y+1];
+                            while(checkposit(k,z,1)<=0)
+                            {
+                                if(ban[k][z]==1)
+                                break;
+                                if(ban[k][z]==0)
+                                {ifgreen(k,z);
+                                break;}
+                                k+=id[t][y];
+                                z+=id[t][y+1];
+                            }
+
+
+                        }
+                        }
+                            }else if(player==2){
+                                if(checkposit(i+id[t][y],j+id[t][y+1],1)<=0 ){
+                        if(ban[i+id[t][y]][j+id[t][y+1]]===1 && ban[i][j]==2 )
+                        {    k=i+id[t][y];
+                             z=j+id[t][y+1];
+                            while(checkposit(k,z,1)<=0)
+                            {
+                                if(ban[k][z]==2)
+                                break;
+                                if(ban[k][z]==0)
+                                {ifgreen(k,z);
+                                break;}
+                                k+=id[t][y];
+                                z+=id[t][y+1];
+                            }
+
+
+                        }
+
+
+                    }
+                }
+
+                        }
+        win(ban);
+      }
+
+    </script>
+
+
+</body>
+</html>
